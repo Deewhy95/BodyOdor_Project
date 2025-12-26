@@ -2,7 +2,7 @@
 
 A small, reproducible data pipeline and exploratory analysis for a survey on body odor (BO) among residents of Lagos State. The repository contains a Jupyter notebook that documents ingestion, validation, cleaning, and basic exploration of the survey dataset, together with modular Python code for the pipeline steps.
 
-- Author: Deewhy95
+- Author: Adedayo Osifuye
 - Last tested: 2025-12-26
 - Languages: Jupyter Notebook, Python (pandas)
 
@@ -14,13 +14,10 @@ A small, reproducible data pipeline and exploratory analysis for a survey on bod
 - [Repository structure](#repository-structure)
 - [Data](#data)
 - [Pipeline modules](#pipeline-modules)
-- [Getting started](#getting-started)
-- [Quick usage examples](#quick-usage-examples)
 - [Data dictionary (variables)](#data-dictionary-variables)
 - [Design decisions & validation rules](#design-decisions--validation-rules)
 - [Testing](#testing)
 - [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ---
@@ -52,8 +49,6 @@ This project demonstrates a simple, production-minded pipeline for a small surve
 
 The dataset is a survey with self-reported demographic, hygiene, dietary, sweating, family/medical background, and emotional/social impact questions.
 
-How the raw data is stored: `Odor_Data.txt` — a tab-separated file with a header row and one row per respondent.
-
 Notes on privacy: the repository contains survey responses. If you plan to publish or share derived data, ensure it is appropriately anonymized and you have the right to redistribute it.
 
 ---
@@ -73,94 +68,44 @@ Notes on privacy: the repository contains survey responses. If you plan to publi
 
 ---
 
-## Getting started
 
-Requirements
-- Python 3.8+ recommended
-- pandas
-- Jupyter (optional, to view the notebook)
-
-Install dependencies (example):
-```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install pandas jupyterlab
-```
-
-Open the notebook:
-```bash
-jupyter notebook "BO Data Pipeline.ipynb"
-# or
-jupyter lab
-```
-
----
-
-## Quick usage examples
-
-Run the full pipeline from a small script or REPL:
-
-```python
-from data_ingestion import load_data
-from data_validation import validate_columns
-from data_cleaning import clean_dataset
-
-# Load raw data
-df = load_data("Odor_Data.txt")
-
-# Validate required columns
-if not validate_columns(df):
-    raise SystemExit("Dataset missing required columns")
-
-# Clean dataset
-df_clean = clean_dataset(df)
-print("Cleaned shape:", df_clean.shape)
-# Inspect columns and a few rows
-print(df_clean.columns.tolist())
-print(df_clean.head())
-```
-
-You can also open and run the `BO Data Pipeline.ipynb` notebook to see the same steps documented with example outputs.
-
----
-
-## Data dictionary (variables)
+## Data dictionary
 
 The survey questions (columns) include:
 
-1. 1. Age — respondent age group (expected categories: "18-24 years", "25-34 years", "35-44 years", "45-54 years", "55-64 years", "65 & above"). Unexpected values mapped to "Unknown".
-2. 2. Gender — respondent gender (string).
-3. 3. LGA/LCDA — local government / LCDA (string, standardized by the pipeline).
-4. 4. How often do you bathe or shower per day? (string)
-5. 5. Do you use any of the following regularly? (multi-select string)
-6. 6. How often do you consume the following foods? (multi-select string)
-7. 7. Do you sweat excessively even when not active? (Yes/No/Not sure → numeric)
-8. 8. Are you aware of any medical condition that may cause body odor? (string)
-9. 9. Do you have close relatives with persistent body odor? (string)
-10. 10. Have you ever been told you have body odor? (Yes/No/Not sure → numeric)
-11. 11. If yes, how did it affect you emotionally? (string)
-12. 12. Has body odor ever affected your social life or self-confidence? (string)
-13. 13. Do you think body odor can cause social discrimination or stigmatization? (string)
-14. 14. Have you tried any of the following to reduce body odor? (multi-select string)
-15. 15. Rate the effectiveness of your chosen remedies. (string)
-16. 16. Do you believe some people naturally have stronger body odor due to their body chemistry or genetics? (string)
-17. 17. Do you think body odor should be treated as a medical issue in some cases (string)
+1. Age — respondent age group (expected categories: "18-24 years", "25-34 years", "35-44 years", "45-54 years", "55-64 years", "65 & above"). Unexpected values mapped to "Unknown".
+2. Gender — respondent gender (string).
+3. LGA/LCDA — local government / LCDA (string, standardized by the pipeline).
+4. How often do you bathe or shower per day? (string)
+5. Do you use any of the following regularly? (multi-select string)
+6. How often do you consume the following foods? (multi-select string)
+7. Do you sweat excessively even when not active? (Yes/No/Not sure → numeric)
+8. Are you aware of any medical condition that may cause body odor? (string)
+9. Do you have close relatives with persistent body odor? (string)
+10. Have you ever been told you have body odor? (Yes/No/Not sure → numeric)
+11. If yes, how did it affect you emotionally? (string)
+12. Has body odor ever affected your social life or self-confidence? (string)
+13. Do you think body odor can cause social discrimination or stigmatization? (string)
+14. Have you tried any of the following to reduce body odor? (multi-select string)
+15. Rate the effectiveness of your chosen remedies. (string)
+16. Do you believe some people naturally have stronger body odor due to their body chemistry or genetics? (string)
+17. Do you think body odor should be treated as a medical issue in some cases (string)
 
-Derived/clean columns added by the pipeline:
-- Age_Group — ordered categorical derived from `1. Age`.
-- LGA/LCDA — standardized LGA name (validated against a curated list).
-- Foods — list parsed from multi-select food responses.
-- Hygiene — list parsed from multi-select hygiene responses.
-- Remedies — list parsed from multi-select remedies responses.
-- Excessive Sweating — numeric mapping of the relevant Yes/No question (1/0/None).
-- Told_BO — numeric mapping of whether the respondent has been told they have body odor.
+Derived columns added by the pipeline:
+- Age_Group - ordered categorical derived from `1. Age`.
+- LGA/LCDA - standardized LGA name (validated against a curated list).
+- Foods - list parsed from multi-select food responses.
+- Hygiene - list parsed from multi-select hygiene responses.
+- Remedies - list parsed from multi-select remedies responses.
+- Excessive Sweating - numeric mapping of the relevant Yes/No question (1/0/None).
+- Told_BO - numeric mapping of whether the respondent has been told they have body odor.
 
 ---
 
 ## Design decisions & validation rules
 
 - Age group values are forced into a fixed ordered categorical set; unexpected values become "Unknown".
-- LGA names are standardized using `standardize_lga()` and validated against a curated `valid_lgas` list in `data_cleaning.py`. Rows with LGAs not in the valid list are currently dropped by `validate_lga()`—this is a conscious choice for data quality in the current pipeline.
+- LGA names are standardized using `standardize_lga()` and validated against a curated `valid_lgas` list in `data_cleaning.py`. Rows with LGAs not in the valid list are currently dropped by `validate_lga()` - this is a conscious choice for data quality in the current pipeline.
 - Multi-select fields are parsed by splitting on commas and stripping whitespace.
 - Binary-like answers ("Yes"/"No"/"Not sure") are mapped to numeric values for downstream modelling/analysis. "Not sure" is mapped to None (NaN) — treat appropriately in analyses.
 
@@ -175,23 +120,6 @@ The notebook includes a "Test Code" section that demonstrates a simple end-to-en
 - LGA Cleaning Summary: { total_rows: X, valid_rows: Y, percent_invalid: Z }
 - Cleaning completed successfully! Cleaned Data Shape: (Y, ...)
 
-To run a quick programmatic test from the command line:
-
-```bash
-python - <<'PY'
-from data_ingestion import load_data
-from data_validation import validate_columns
-from data_cleaning import clean_dataset
-df = load_data("Odor_Data.txt")
-print("Columns ok:", validate_columns(df))
-df_clean = clean_dataset(df)
-print("Cleaned shape:", df_clean.shape)
-PY
-```
-
-If you run into errors, ensure pandas is installed and the working directory contains `Odor_Data.txt` and the module files.
-
----
 
 ## Contributing
 
@@ -201,16 +129,6 @@ Contributions are welcome. Suggestions:
 - Improve LGA normalization mapping and/or make validation configurable (e.g., keep rows flagged instead of dropping).
 - Add unit tests (pytest) for each module (ingestion, validation, and cleaning).
 - Add analysis/visualization notebooks or scripts to expand EDA or statistical testing.
-
-Please open an issue or a PR on the GitHub repository with changes or suggestions.
-
----
-
-## License
-
-This repository does not include an explicit license file. If you want this project to be open-source, add a LICENSE (e.g., MIT) to clarify reuse terms.
-
----
 
 ## Contact
 
