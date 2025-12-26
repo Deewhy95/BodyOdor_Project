@@ -107,7 +107,7 @@ Derived columns added by the pipeline:
 - Age group values are forced into a fixed ordered categorical set; unexpected values become "Unknown".
 - LGA names are standardized using `standardize_lga()` and validated against a curated `valid_lgas` list in `data_cleaning.py`. Rows with LGAs not in the valid list are currently dropped by `validate_lga()` - this is a conscious choice for data quality in the current pipeline.
 - Multi-select fields are parsed by splitting on commas and stripping whitespace.
-- Binary-like answers ("Yes"/"No"/"Not sure") are mapped to numeric values for downstream modelling/analysis. "Not sure" is mapped to None (NaN) — treat appropriately in analyses.
+- Binary-like answers ("Yes"/"No"/"Not sure") are mapped to numeric values for downstream modelling/analysis. "Not sure" is mapped to None - treat appropriately in analyses.
 
 ---
 
