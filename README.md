@@ -36,12 +36,12 @@ This project demonstrates a simple, production-minded pipeline for a small surve
 
 ## Repository structure
 
-- BO Data Pipeline.ipynb — Primary Jupyter notebook demonstrating ingestion, validation, cleaning, and some interactive exploration/tests.
-- data_ingestion.py — load_data(file_path) utility supporting .csv, .txt, .tsv.
-- data_validation.py — validate_columns(df) to confirm required column presence.
-- data_cleaning.py — cleaning helpers and clean_dataset(df) for age grouping, LGA standardization/validation, multi-select parsing, and binary mapping.
-- Odor_Data.txt — Raw tab-separated survey data (source).
-- README.md — This file.
+- BO Data Pipeline.ipynb - Primary Jupyter notebook demonstrating ingestion, validation, cleaning, and some interactive exploration/tests.
+- data_ingestion.py - load_data(file_path) utility supporting .csv, .txt, .tsv.
+- data_validation.py - validate_columns(df) to confirm required column presence.
+- data_cleaning.py - cleaning helpers and clean_dataset(df) for age grouping, LGA standardization/validation, multi-select parsing, and binary mapping.
+- Odor_Data.txt - Raw tab-separated survey data (source).
+- README.md - This file.
 
 ---
 
@@ -73,9 +73,9 @@ Notes on privacy: the repository contains survey responses. If you plan to publi
 
 The survey questions (columns) include:
 
-1. Age — respondent age group (expected categories: "18-24 years", "25-34 years", "35-44 years", "45-54 years", "55-64 years", "65 & above"). Unexpected values mapped to "Unknown".
-2. Gender — respondent gender (string).
-3. LGA/LCDA — local government / LCDA (string, standardized by the pipeline).
+1. Age - respondent age group (expected categories: "18-24 years", "25-34 years", "35-44 years", "45-54 years", "55-64 years", "65 & above"). Unexpected values mapped to "Unknown".
+2. Gender - respondent gender (string).
+3. LGA/LCDA - local government / LCDA (string, standardized by the pipeline).
 4. How often do you bathe or shower per day? (string)
 5. Do you use any of the following regularly? (multi-select string)
 6. How often do you consume the following foods? (multi-select string)
@@ -123,12 +123,7 @@ The notebook includes a "Test Code" section that demonstrates a simple end-to-en
 
 ## Contributing
 
-Contributions are welcome. Suggestions:
-
-- Add a `requirements.txt` or `environment.yml`.
-- Improve LGA normalization mapping and/or make validation configurable (e.g., keep rows flagged instead of dropping).
-- Add unit tests (pytest) for each module (ingestion, validation, and cleaning).
-- Add analysis/visualization notebooks or scripts to expand EDA or statistical testing.
+Contributions are welcome.
 
 ## Contact
 
